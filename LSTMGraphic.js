@@ -142,6 +142,15 @@ class LSTMGraphic
 		if(this.stringInProgress[this.stringInProgress.length - 1] == 'E') return;
 		
 		this.cell = (this.cell + 1) % (this.gridlinks.length + this.misclinks.length);
+
+        if(keyCode === LEFT_ARROW)
+		{
+			this.cell = (this.cell + this.gridlinks.length + this.misclinks.length - 1) % (this.gridlinks.length + this.misclinks.length);
+		}
+		else
+		{
+			this.cell = (this.cell + 1) % (this.gridlinks.length + this.misclinks.length);
+		}
 		if(this.cell < this.gridlinks.length) 
 		{
 			this.updateDataCell(this.gridlinks[this.cell].row, this.gridlinks[this.cell].col);

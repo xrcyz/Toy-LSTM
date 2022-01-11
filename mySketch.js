@@ -41,8 +41,12 @@ function draw()
 	fill(13, 17, 23);
 	noStroke();
 	textSize(16);
+    textAlign(LEFT);
 	text(myReberStrings.join("\n"), width - 300, height/2);
 	
+    textAlign(CENTER);
+    text("Use left/right arrow keys to step through the code.", width/2, 30);
+
 	frames++;
 	if(frames > 10)
 	{
@@ -50,7 +54,7 @@ function draw()
 		//myReberStrings.push(myLSTM.getReberString(30));
 		//myReberStrings.shift();
 		
-		lstm_graphic.update();
+		//lstm_graphic.update();
 	}
 	
 	grammar_graphic.draw();
