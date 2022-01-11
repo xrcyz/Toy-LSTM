@@ -8,8 +8,9 @@ let lstm_graphic;
 
 function setup() 
 {
-	createCanvas(windowWidth, windowHeight);
-	
+	let canvas = createCanvas(windowWidth, windowHeight);
+	canvas.style('display', 'block'); 
+
 	grammar_graphic = new ReberGrammarGraphic();
 	lstm_graphic = new LSTMGraphic();
 	
