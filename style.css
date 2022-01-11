@@ -5,7 +5,5 @@ body {
 }
 
 canvas {
-    display: block;
+    display: block; /* prevents scroll bars on full width sketches */
 }
-
-/* overflow: hidden; */

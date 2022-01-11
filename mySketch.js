@@ -8,8 +8,7 @@ let lstm_graphic;
 
 function setup() 
 {
-	let canvas = createCanvas(windowWidth, windowHeight);
-    canvas.style('display', 'block'); //remove scroll bars from overflow
+	createCanvas(windowWidth, windowHeight);
 	
 	grammar_graphic = new ReberGrammarGraphic();
 	lstm_graphic = new LSTMGraphic();

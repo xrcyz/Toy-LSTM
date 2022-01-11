@@ -141,9 +141,9 @@ class LSTMGraphic
 	{
 		if(this.stringInProgress[this.stringInProgress.length - 1] == 'E') return;
 		
-        if(keyCode === LEFT_ARROW)
+        if(keyCode === LEFT_ARROW && !(this.cell == 0 && this.str == "B"))
 		{
-			this.cell = (this.cell + this.gridlinks.length + this.misclinks.length - 1) % (this.gridlinks.length + this.misclinks.length);
+            this.cell = (this.cell + this.gridlinks.length + this.misclinks.length - 1) % (this.gridlinks.length + this.misclinks.length);
 		}
 		else
 		{
