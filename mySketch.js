@@ -5,6 +5,7 @@ let myReberStrings = [];
 let frames = 0;
 let grammar_graphic;
 let lstm_graphic;
+let autostep = false;
 
 function setup() 
 {
@@ -37,7 +38,14 @@ function setup()
 
 function draw() 
 {
-	//background(13, 17, 23);
+	if(windowWidth < 1000)
+	{
+		background(13, 17, 23);
+		fill(255);
+		text("Screen size not supported.", 50, 50);
+		return;
+	}
+
 	background(228);
 	fill(13, 17, 23);
 	noStroke();
@@ -46,16 +54,16 @@ function draw()
 	text(myReberStrings.join("\n"), width - 300, height/2);
 	
     textAlign(CENTER);
-    text("Use left/right arrow keys to step through the code.", width/2, 30);
+    text("Use arrow keys to navigate.", width/2, 30);
 
 	frames++;
-	if(frames > 10)
+	if(frames > 5)
 	{
 		frames = 0;
 		//myReberStrings.push(myLSTM.getReberString(30));
 		//myReberStrings.shift();
 		
-		//lstm_graphic.update();
+		if(autostep) lstm_graphic.update();
 	}
 	
 	grammar_graphic.draw();
@@ -69,7 +77,9 @@ function draw()
 
 function keyPressed()
 {
-	lstm_graphic.update();
+	if(keyCode == DOWN_ARROW) autostep = true;
+	else if(keyCode == UP_ARROW) autostep = false;
+	else lstm_graphic.update();
 }
 
 function mouseClicked()
