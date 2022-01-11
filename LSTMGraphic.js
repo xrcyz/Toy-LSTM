@@ -141,25 +141,36 @@ class LSTMGraphic
 	{
 		if(this.stringInProgress[this.stringInProgress.length - 1] == 'E') return;
 		
-        if(keyCode === LEFT_ARROW && !(this.cell == 0 && this.str == "B"))
+        if(keyCode === LEFT_ARROW)
 		{
-            this.cell = (this.cell + this.gridlinks.length + this.misclinks.length - 1) % (this.gridlinks.length + this.misclinks.length);
+            if(this.cell >= this.gridlinks.length)
+			{
+				
+			}
+			else
+			{
+				this.cell = (this.cell + this.gridlinks.length + this.misclinks.length - 1) % (this.gridlinks.length + this.misclinks.length);
+				
+				if(this.cell < this.gridlinks.length) 
+				{
+					this.updateDataCell(this.gridlinks[this.cell].row, this.gridlinks[this.cell].col);
+				}
+			}
 		}
 		else
 		{
 			this.cell = (this.cell + 1) % (this.gridlinks.length + this.misclinks.length);
-		}
 
-		if(this.cell < this.gridlinks.length) 
-		{
-			this.updateDataCell(this.gridlinks[this.cell].row, this.gridlinks[this.cell].col);
+            if(this.cell < this.gridlinks.length) 
+            {
+                this.updateDataCell(this.gridlinks[this.cell].row, this.gridlinks[this.cell].col);
+            }
+            else
+            {
+                let id = this.misclinks[this.cell % this.gridlinks.length].id; 
+                this.updateMiscCell(id);
+            }
 		}
-		else
-		{
-			let id = this.misclinks[this.cell % this.gridlinks.length].id; 
-			this.updateMiscCell(id);
-		}
-		
 		
 		this.updateGraphic();
 	}
