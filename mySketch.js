@@ -69,10 +69,6 @@ function draw()
 	grammar_graphic.draw();
 	lstm_graphic.draw(10, 50);
 	
-	//noFill();
-	//stroke(255);
-	//bezier(100, 20, 100, 100, 200, 20, 200, 100);
-	//noLoop();
 }
 
 function keyPressed()

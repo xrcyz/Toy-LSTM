@@ -185,44 +185,30 @@ class LSTMGraphic
 		let V = this.arrays[this.input][5];
 		let E = this.arrays[this.input][6];
 		
-		//let memory = this.arrays[this.memory];
-		
-		//eraser[3] = 1 / (1 + exp(-10 * (0.5 - P)));                     //reset on P
-		//eraser[4] = 1 / (1 + exp(-10 * (0.6 - memory[4])));             //reset on exit
-		//eraser[5] = 1 / (1 + exp(-10 * (0.5 - S - V)));                 //reset on S,V
-		
-		//writer[3] = Math.tanh(3.0 * S + 0.55 * V);                      //breadcrumbs to node 3
-		//writer[4] = Math.tanh(5 * V);                                   //breadcrumbs to node 4
-		//writer[5] = Math.tanh(0.55 * B + 0.7 * P + 5 * X);              //breadcrumbs to node 5
-		
-		//filter[3] = 1 / (1 + exp(-10 * (0.9 - memory[1])));             //do not increment from node 1
-		//filter[4] = 1 / (1 + exp(-10 * (0.6 - memory[4])));             //filter V on exit
-		//filter[5] = 1 / (1 + exp(-30 * (0.65 - memory[1])));            //do not increment from node 1
-		
 		const populateEraser = 
 		[
 			() => { this.arrays[drow][dcol] = 0; },
-			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.5 - X - V - P))); },
+			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.5 - X))); },
 			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-30 * (0.65 - this.arrays[this.memory][2]))); },
 			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.5 - P))); },
 			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.6 - this.arrays[this.memory][4]))); },
-			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.5 - S - V))); },
+			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.5 - V))); },
 		];
 		
 		const eraserFormulas = 
 		[
 			"eraser[0] = 0;",
-			"eraser[1] = 1 / (1 + exp(-10 * (0.5 - X - V - P)));",
+			"eraser[1] = 1 / (1 + exp(-10 * (0.5 - X)));",
 			"eraser[2] = 1 / (1 + exp(-30 * (0.65 - memory[2])));",
 			"eraser[3] = 1 / (1 + exp(-10 * (0.5 - P)));",
 			"eraser[4] = 1 / (1 + exp(-10 * (0.6 - memory[4])));",
-			"eraser[5] = 1 / (1 + exp(-10 * (0.5 - S - V)));",
+			"eraser[5] = 1 / (1 + exp(-10 * (0.5 - V)));",
 		];
 		
 		const populateWriter = 
 		[
 			() => { this.arrays[drow][dcol] = Math.tanh(5 * B); },
-			() => { this.arrays[drow][dcol] = Math.tanh(0.197 * B + 1.098 * T + 0.55 * S); },
+			() => { this.arrays[drow][dcol] = Math.tanh(5 * T); },
 			() => { this.arrays[drow][dcol] = Math.tanh(0.55 * (T + X + P)); },
 			() => { this.arrays[drow][dcol] = Math.tanh(3.0 * S + 0.55 * V); },
 			() => { this.arrays[drow][dcol] = Math.tanh(5 * V); },
@@ -232,7 +218,7 @@ class LSTMGraphic
 		const writerFormulas = 
 		[
 			"writer[0] = Math.tanh(5 * B);",
-			"writer[1] = Math.tanh(0.197 * B + 1.098 * T + 0.55 * S);",
+			"writer[1] = Math.tanh(5 * T);",
 			"writer[2] = Math.tanh(0.55 * (T + X + P));",
 			"writer[3] = Math.tanh(3.0 * S + 0.55 * V);",
 			"writer[4] = Math.tanh(5 * V);",
@@ -244,7 +230,7 @@ class LSTMGraphic
 			() => { this.arrays[drow][dcol] = 1; },
 			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-30 * (0.75 - this.arrays[this.memory][5]))); },
 			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-30 * (0.65 - this.arrays[this.memory][5]))); },
-			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.9  - this.arrays[this.memory][1]))); },
+			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.7  - this.arrays[this.memory][1]))); },
 			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-10 * (0.6  - this.arrays[this.memory][4]))); },
 			() => { this.arrays[drow][dcol] = 1 / (1 + exp(-30 * (0.65 - this.arrays[this.memory][1]))); },
 		];
@@ -254,7 +240,7 @@ class LSTMGraphic
 			"filter[0] = 1;",
 			"filter[1] = 1 / (1 + exp(-30 * (0.75 - memory[5])));",
 			"filter[2] = 1 / (1 + exp(-30 * (0.65 - memory[5]))); ",
-			"filter[3] = 1 / (1 + exp(-10 * (0.9 - memory[1])));",
+			"filter[3] = 1 / (1 + exp(-10 * (0.7 - memory[1])));",
 			"filter[4] = 1 / (1 + exp(-10 * (0.6 - memory[4])));",
 			"filter[5] = 1 / (1 + exp(-30 * (0.65 - memory[1])));",
 		];
@@ -265,23 +251,23 @@ class LSTMGraphic
 		const populateReader = 
 		[
 			() => { this.arrays[drow][dcol] = 0.0; },
-			() => { this.arrays[drow][dcol] = Math.tanh(5  * (this.arrays[this.memory2][0] + this.arrays[this.memory2][5] - 0.7)); },
-			() => { this.arrays[drow][dcol] = Math.tanh(5  * (this.arrays[this.memory2][1] + this.arrays[this.memory2][2] - 0.7)); },
-			() => { this.arrays[drow][dcol] = Math.tanh(5  * (this.arrays[this.memory2][1] + this.arrays[this.memory2][2] - 0.7)); },
-			() => { this.arrays[drow][dcol] = Math.tanh(5  * (this.arrays[this.memory2][0] + this.arrays[this.memory2][4] - 0.7)); },
-			() => { this.arrays[drow][dcol] = Math.tanh(10 * (this.arrays[this.memory2][4] + this.arrays[this.memory2][5] - 0.9)); },
-			() => { this.arrays[drow][dcol] = Math.tanh(5  * (this.arrays[this.memory2][3]             - 0.7)); },
+			() => { this.arrays[drow][dcol] = Math.tanh(5 * (this.arrays[this.memory2][0] + this.arrays[this.memory2][5] - 0.7)); },
+			() => { this.arrays[drow][dcol] = Math.tanh(5 * (this.arrays[this.memory2][1] + this.arrays[this.memory2][2] - 0.7)); },
+			() => { this.arrays[drow][dcol] = Math.tanh(5 * (this.arrays[this.memory2][1] + this.arrays[this.memory2][2] - 0.7)); },
+			() => { this.arrays[drow][dcol] = Math.tanh(5 * (this.arrays[this.memory2][0] + this.arrays[this.memory2][4] - 0.7)); },
+			() => { this.arrays[drow][dcol] = Math.tanh(5 * (this.arrays[this.memory2][4] + this.arrays[this.memory2][5] - 0.7)); },
+			() => { this.arrays[drow][dcol] = Math.tanh(5 * (this.arrays[this.memory2][3]             - 0.7)); },
 		];
 				
 		const readerFormulas = 
 		[
 			"reader[0] = 0;",
-			"reader[1] = Math.tanh(5  * (memory[0] + memory[5] - 0.7));",
-			"reader[2] = Math.tanh(5  * (memory[1] + memory[2] - 0.7));",
-			"reader[3] = Math.tanh(5  * (memory[1] + memory[2] - 0.7));",
-			"reader[4] = Math.tanh(5  * (memory[0] + memory[4] - 0.7));",
-			"reader[5] = Math.tanh(10 * (memory[4] + memory[5] - 0.9));",
-			"reader[6] = Math.tanh(5  * (memory[3] - 0.7));",
+			"reader[1] = Math.tanh(5 * (memory[0] + memory[5] - 0.7));",
+			"reader[2] = Math.tanh(5 * (memory[1] + memory[2] - 0.7));",
+			"reader[3] = Math.tanh(5 * (memory[1] + memory[2] - 0.7));",
+			"reader[4] = Math.tanh(5 * (memory[0] + memory[4] - 0.7));",
+			"reader[5] = Math.tanh(5 * (memory[4] + memory[5] - 0.7));",
+			"reader[6] = Math.tanh(5 * (memory[3] - 0.7));",
 		];
 		
 		if(drow == this.eraser)      { populateEraser[dcol](); this.formulaText = eraserFormulas[dcol]; }
